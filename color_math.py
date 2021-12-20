@@ -13,12 +13,12 @@ def cuberp(x: float, x0: float, x1: float) -> float:
 
 
 # Interpolation of two colors
-# Formula parameter specifies the interpolation method as a lambda expression
+# Formula parameter allows for the specification of the interpolation method as a lambda expression
 def interp_color(x: float, color1: tuple, color2: tuple, formula) -> tuple:
     return formula(x, color1[0], color2[0]), formula(x, color1[1], color2[1]), formula(x, color1[2], color2[2])
 
 
-# casts a color to int values
+# Casts a color to int values
 def to_int(color: tuple) -> tuple:
     return int(color[0]), int(color[1]), int(color[2])
 

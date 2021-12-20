@@ -22,8 +22,9 @@ def rainbow(width, height):
     return generate(width, height, lambda x, y: hsv(x / 7 + y / 14, 0.8, 0.95))
 
 
-# Bi pride flag gradient
-def bi(width, height):
+# Bi pride flag gradient, but using logistical curves
+# No longer used as it's pretty slow and the cubic interpolated one looks better.
+def bi_logistical(width, height):
     center = (width + height) / 2
 
     # Uses logistical curves to create a smooth transition from magenta to purple to blue
@@ -34,6 +35,24 @@ def bi(width, height):
 
     return generate(width, height, lambda x, y: hsv(320 + curve_total(x + y / 2), 0.85, 0.88 - x / 7680))
 
+
+# Also bi pride, but this time with cubic interpolation rather than logistical
+# Should reduce compute times
+def bi(width, height):
+    magenta = 214, 2, 112
+    purple = 155, 79, 150
+    blue = 0, 56, 168
+
+    def get_color(x: int, center: int, width: int):
+        delta = x - center
+        if delta < -width / 2:
+            return to_int(interp_color((-width / 2 - delta) / 300, purple, magenta, lambda x, x0, x1: cuberp(x, x0, x1)))
+        if delta > width / 2:
+            return to_int(interp_color((delta - width / 2) / 600, purple, blue, lambda x, x0, x1: cuberp(x, x0, x1)))
+        return purple
+
+    center = (width + height / 2) / 2
+    return generate(width, height, lambda x, y: get_color(x + y / 2, center, 60))
 
 # Pan pride flag gradient
 def pan(width, height):
