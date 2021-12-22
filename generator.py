@@ -1,10 +1,9 @@
 from PIL import Image
-from numpy import abs, exp, sqrt
+from numpy import abs, exp
 from color_math import to_int, interp_color, cuberp, hsv
 
 
 # Generates an image based on a function defining the color of each pixel
-# image: image object to be drawn on
 # generator: function used to generate the color of a pixel; takes coordinates as parameters and returns a color (tuple)
 def generate(width: int, height: int, generator) -> Image:
     image = Image.new("RGB", (width, height))
@@ -18,12 +17,13 @@ def generate(width: int, height: int, generator) -> Image:
 
 
 # Gay pride flag gradient
-def rainbow(width: int, height: int) -> Image:
+def gen_gay_flag(width: int, height: int) -> Image:
+    # Uses hsv to generate a rainbow
     return generate(width, height, lambda x, y: hsv(x / 7 + y / 14, 0.8, 0.95))
 
 
 # Bi pride flag gradient, but using logistical curves
-# No longer used as it's pretty slow and the cubic interpolated one looks better.
+# No longer used as it's pretty slow and the cubic interpolated one looks better imo
 def bi_logistical(width: int, height: int) -> Image:
     center = (width + height) / 2
 
@@ -38,12 +38,13 @@ def bi_logistical(width: int, height: int) -> Image:
 
 # Also bi pride, but this time with cubic interpolation rather than logistical
 # Should reduce compute times
-def bi(width: int, height: int) -> Image:
+def gen_bi_flag(width: int, height: int) -> Image:
+    # Colors used for the flag
     magenta = 214, 2, 112
     purple = 155, 79, 150
     blue = 0, 56, 168
 
-    def get_color(x: int, center: float, width: int):
+    def get_color(x: int, center: float, width: int) -> tuple:
         delta = x - center
         if delta < -width / 2:
             return to_int(interp_color((-width / 2 - delta) / 300, purple, magenta, lambda x, x0, x1: cuberp(x, x0, x1)))
@@ -56,12 +57,13 @@ def bi(width: int, height: int) -> Image:
 
 
 # Pan pride flag gradient
-def pan(width: int, height: int) -> Image:
+def gen_pan_flag(width: int, height: int) -> Image:
+    # Colors used for the flag
     magenta = 255, 33, 142
     yellow = 252, 216, 0
     blue = 1, 148, 252
 
-    def get_color(x: int, center: float, width: int):
+    def get_color(x: int, center: float, width: int) -> tuple:
         delta = x - center
         if delta < -width / 2:
             return to_int(interp_color((-width / 2 - delta) / 400, yellow, magenta, lambda x, x0, x1: cuberp(x, x0, x1)))
@@ -74,22 +76,22 @@ def pan(width: int, height: int) -> Image:
 
 
 # Ace pride flag gradient
-def ace_flag(width: int, height: int) -> Image:
-    # Colors used for the flag
-    # Black to white are generated using a hsv gradient instead
+def gen_ace_flag(width: int, height: int) -> Image:
+    # Black to white are generated using a hsv gradient instead of color literals
     purple = 128, 0, 128
 
     def get_color(x: int, center: float, width: int) -> tuple:
         delta = x - center
-        if(delta < width): return hsv(0, 0, cuberp(0.7 + delta / width / 3, 0, 1))
+        if delta < width:
+            return hsv(0, 0, cuberp(0.7 + delta / width / 3, 0, 1))
         return to_int(interp_color((delta - width) / 540, (255, 255, 255), purple, lambda x, x0, x1: cuberp(x, x0, x1)))
 
     center = (width + height / 2) / 2
-    return generate(width, height, lambda x, y: get_color(x + y / 2, center - 100, 480))
+    return generate(width, height, lambda x, y: get_color(x + y / 2, center - 180, 420))
 
 
 # Trans pride flag gradient
-def trans(width: int, height: int) -> Image:
+def gen_trans_flag(width: int, height: int) -> Image:
     # Colors used for the flag
     white = 255, 255, 255
     pink = 247, 168, 184
@@ -106,3 +108,6 @@ def trans(width: int, height: int) -> Image:
 
     center = (width + height / 2) / 2
     return generate(width, height, lambda x, y: get_color(x + y / 2, center, 500))
+
+
+

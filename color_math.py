@@ -1,11 +1,13 @@
-
-
 # Linear interpolation
-def lerp(x: float, x0: float, x1: float) -> float:
+# Admittedly doesn't look very good
+# Does not necessarily restrict to values between 0 and 1
+def lerp(x: float, x0: float, x1: float, restrict=False) -> float:
+    if restrict: x = min(1.0, max(0.0, x))
     return x0 + x * (x1 - x0)
 
 
 # Cubic interpolation using f(x) = 3x² - 2x³
+# Always restricts to x between 0 and 1
 def cuberp(x: float, x0: float, x1: float) -> float:
     x = min(1.0, x)
     x = max(0.0, x)
@@ -13,7 +15,7 @@ def cuberp(x: float, x0: float, x1: float) -> float:
 
 
 # Interpolation of two colors
-# Formula parameter allows for the specification of the interpolation method as a lambda expression
+# interp parameter allows for the specification of the interpolation method as a lambda expression
 def interp_color(x: float, color1: tuple, color2: tuple, interp) -> tuple:
     return interp(x, color1[0], color2[0]), interp(x, color1[1], color2[1]), interp(x, color1[2], color2[2])
 
@@ -25,6 +27,10 @@ def to_int(color: tuple) -> tuple:
 
 # Returns a tuple r, g, b calculated from the hsv values given
 def hsv(h: float, s: float, v: float) -> tuple:
+    if s == 0:
+        v *= 255
+        return to_int((v, v, v))
+
     h %= 360
     c = v * s
     x = c * (1 - abs((h / 60) % 2 - 1))

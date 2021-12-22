@@ -1,21 +1,28 @@
 from PIL import Image
-from generator import rainbow, bi, trans, pan, ace_flag
+from generator import gen_gay_flag, gen_bi_flag, gen_trans_flag, gen_pan_flag, gen_ace_flag
 
+
+# Combines all the flags in the list of flags
+def combine_flags(width: int, height: int, flags: list) -> Image:
+    image = Image.new('RGB', (width, len(flags) * height))
+
+    for index, flag in enumerate(flags):
+        image.paste(flag, (0, height * index))
+
+    return image
+
+
+# The main script just generates an image with the flags stacked on top of one another
 if __name__ == '__main__':
+    flags = []
     width, height = 1920, 120
 
-    gay_flag = rainbow(width, height)
-    trans_flag = trans(width, height)
-    bi_flag = bi(width, height)
-    pan_flag = pan(width, height)
-    ace_flag_image = ace_flag(width, height)
+    flags.append(gen_gay_flag(width, height))
+    flags.append(gen_trans_flag(width, height))
+    flags.append(gen_bi_flag(width, height))
+    flags.append(gen_pan_flag(width, height))
+    flags.append(gen_ace_flag(width, height))
 
-    flags = Image.new('RGB', (width, 5 * height))
-    flags.paste(gay_flag, (0, 0))
-    flags.paste(bi_flag, (0, height))
-    flags.paste(pan_flag, (0, 2 * height))
-    flags.paste(trans_flag, (0, 3 * height))
-    flags.paste(ace_flag_image, (0, 4 * height))
+    flags_image = combine_flags(width, height, flags)
 
-    flags.show('Flags')
-
+    flags_image.show('Flags')
