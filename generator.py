@@ -46,10 +46,11 @@ def gen_bi_flag(width: int, height: int) -> Image:
 
     def get_color(x: int, center: float, width: int) -> tuple:
         delta = x - center
+        blur = 320
         if delta < -width / 2:
-            return to_int(interp_color((-width / 2 - delta) / 300, purple, magenta,  cuberp))
+            return to_int(interp_color((-width / 2 - delta) / blur, purple, magenta,  cuberp))
         if delta > width / 2:
-            return to_int(interp_color((delta - width / 2) / 600, purple, blue, cuberp))
+            return to_int(interp_color(0.6 * (delta - width / 2) / blur, purple, blue, cuberp))
         return purple
 
     center = (width + height / 2) / 2
@@ -83,12 +84,12 @@ def gen_ace_flag(width: int, height: int) -> Image:
 
     def get_color(x: int, center: float, width: int) -> tuple:
         delta = x - center
-        if delta < width:
-            return hsv(0, 0, cuberp(0.7 + delta / width / 3, 0, 1))
-        return to_int(interp_color((delta - width) / 540, white, purple, cuberp))
+        if delta < width / 2:
+            return hsv(0, 0, cuberp(0.8 + delta / width / 3, 0, 1))
+        return to_int(interp_color((delta - width) / 384 + 0.3, white, purple, cuberp))
 
     center = (width + height / 2) / 2
-    return generate(width, height, lambda x, y: get_color(x + y / 2, center - 180, 420))
+    return generate(width, height, lambda x, y: get_color(x + y / 2, center, 500))
 
 
 # Trans pride flag gradient
@@ -130,3 +131,36 @@ def gen_enby_flag(width: int, height: int) -> Image:
 
     center = (width + height / 2) / 2
     return generate(width, height, lambda x, y: get_color(x + y / 2, center, 600))
+
+
+def gen_progress_flag(width: int, height: int) -> Image:
+    # Colors used
+    # Rainbow is generated using hsv
+    white = 255, 255, 255
+    pink = 247, 168, 184
+    blue = 85, 205, 252
+    brown = 97, 57, 21
+    black = 0, 0, 0
+
+    def get_color(x: int, center: float, width: int) -> tuple:
+        delta = x - center
+        blur = 144
+        if delta < -4 * width:
+            return to_int(interp_color((delta + 4.5 * width) / blur + 0.5, white, pink, cuberp))
+        if delta < -3 * width:
+            return to_int(interp_color((delta + 3.5 * width) / blur + 0.5, pink, blue, cuberp))
+        if delta < -2 * width:
+            return to_int(interp_color((delta + 2.5 * width) / blur + 0.5, blue, brown, cuberp))
+        if delta < -1 * width:
+            return to_int(interp_color((delta + 1.5 * width) / blur + 0.5, brown, black, cuberp))
+        if delta < 0:
+            return to_int(interp_color((delta + 0.5 * width) / blur + 0.5, black, hsv(54 * delta / width + 24, 0.8, 0.95), cuberp))
+        return hsv(54 * delta / width + 24, 0.8, 0.95)
+
+    center = (width + height / 2) / 2
+    return generate(width, height, lambda x, y: get_color(x + y / 2, center, 200))
+
+
+# Runs a smaller scale test of just one of the flags
+if __name__ == "__main__":
+    gen_progress_flag(1920, 200).show()
