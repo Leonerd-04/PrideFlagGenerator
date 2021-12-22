@@ -47,9 +47,9 @@ def gen_bi_flag(width: int, height: int) -> Image:
     def get_color(x: int, center: float, width: int) -> tuple:
         delta = x - center
         if delta < -width / 2:
-            return to_int(interp_color((-width / 2 - delta) / 300, purple, magenta, lambda x, x0, x1: cuberp(x, x0, x1)))
+            return to_int(interp_color((-width / 2 - delta) / 300, purple, magenta,  cuberp))
         if delta > width / 2:
-            return to_int(interp_color((delta - width / 2) / 600, purple, blue, lambda x, x0, x1: cuberp(x, x0, x1)))
+            return to_int(interp_color((delta - width / 2) / 600, purple, blue, cuberp))
         return purple
 
     center = (width + height / 2) / 2
@@ -66,9 +66,9 @@ def gen_pan_flag(width: int, height: int) -> Image:
     def get_color(x: int, center: float, width: int) -> tuple:
         delta = x - center
         if delta < -width / 2:
-            return to_int(interp_color((-width / 2 - delta) / 400, yellow, magenta, lambda x, x0, x1: cuberp(x, x0, x1)))
+            return to_int(interp_color((-width / 2 - delta) / 400, yellow, magenta, cuberp))
         if delta > width / 2:
-            return to_int(interp_color((delta - width / 2) / 400, yellow, blue, lambda x, x0, x1: cuberp(x, x0, x1)))
+            return to_int(interp_color((delta - width / 2) / 400, yellow, blue, cuberp))
         return yellow
 
     center = (width + height / 2) / 2
@@ -79,12 +79,13 @@ def gen_pan_flag(width: int, height: int) -> Image:
 def gen_ace_flag(width: int, height: int) -> Image:
     # Black to white are generated using a hsv gradient instead of color literals
     purple = 128, 0, 128
+    white = 255, 255, 255
 
     def get_color(x: int, center: float, width: int) -> tuple:
         delta = x - center
         if delta < width:
             return hsv(0, 0, cuberp(0.7 + delta / width / 3, 0, 1))
-        return to_int(interp_color((delta - width) / 540, (255, 255, 255), purple, lambda x, x0, x1: cuberp(x, x0, x1)))
+        return to_int(interp_color((delta - width) / 540, white, purple, cuberp))
 
     center = (width + height / 2) / 2
     return generate(width, height, lambda x, y: get_color(x + y / 2, center - 180, 420))
@@ -101,13 +102,31 @@ def gen_trans_flag(width: int, height: int) -> Image:
     def get_color(x: int, center: float, width: int) -> tuple:
         delta = abs(x - center)
         if delta < width / 2 + 30:
-            return to_int(interp_color((width / 2 - delta) / 80, pink, white, lambda x, x0, x1: cuberp(x, x0, x1)))
+            return to_int(interp_color((width / 2 - delta) / 80, pink, white, cuberp))
         if delta < 3/2 * width + 30:
-            return to_int(interp_color((3 * width / 2 - delta) / 120, blue, pink, lambda x, x0, x1: cuberp(x, x0, x1)))
+            return to_int(interp_color((3 * width / 2 - delta) / 120, blue, pink, cuberp))
         return blue
 
     center = (width + height / 2) / 2
     return generate(width, height, lambda x, y: get_color(x + y / 2, center, 500))
 
 
+# Enby pride flag gradient
+def gen_enby_flag(width: int, height: int) -> Image:
+    # Colors to be used
+    yellow = 255, 244, 48
+    white = 255, 255, 255
+    purple = 156, 89, 209
+    black = 0, 0, 0
 
+    def get_color(x: int, center: float, width: int) -> tuple:
+        delta = x - center
+        blur = 200
+        if delta < - width / 2:
+            return to_int(interp_color((delta + width) / blur + 0.5, yellow, white, cuberp))
+        if delta < width / 2:
+            return to_int(interp_color(delta / blur + 0.5, white, purple, cuberp))
+        return to_int(interp_color(0.4 * (delta - width) / blur + 0.5, purple, black, cuberp))
+
+    center = (width + height / 2) / 2
+    return generate(width, height, lambda x, y: get_color(x + y / 2, center, 600))
