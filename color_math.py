@@ -5,7 +5,7 @@ def lerp(x: float, x0: float, x1: float) -> float:
     return x0 + x * (x1 - x0)
 
 
-# Cubic interpolation
+# Cubic interpolation using f(x) = 3x² - 2x³
 def cuberp(x: float, x0: float, x1: float) -> float:
     x = min(1.0, x)
     x = max(0.0, x)
@@ -14,8 +14,8 @@ def cuberp(x: float, x0: float, x1: float) -> float:
 
 # Interpolation of two colors
 # Formula parameter allows for the specification of the interpolation method as a lambda expression
-def interp_color(x: float, color1: tuple, color2: tuple, formula) -> tuple:
-    return formula(x, color1[0], color2[0]), formula(x, color1[1], color2[1]), formula(x, color1[2], color2[2])
+def interp_color(x: float, color1: tuple, color2: tuple, interp) -> tuple:
+    return interp(x, color1[0], color2[0]), interp(x, color1[1], color2[1]), interp(x, color1[2], color2[2])
 
 
 # Casts a color to int values
