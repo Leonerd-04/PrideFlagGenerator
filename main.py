@@ -1,5 +1,5 @@
 from PIL import Image
-from generator import gen_gay_flag, gen_bi_flag, gen_trans_flag, gen_pan_flag, \
+from generator import gen_gay_flag, gen_gay_flag_hsv, gen_bi_flag, gen_trans_flag, gen_pan_flag, \
     gen_ace_flag, gen_enby_flag, gen_progress_flag
 
 

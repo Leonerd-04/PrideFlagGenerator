@@ -1,6 +1,6 @@
 from PIL import Image
 from numpy import abs, exp
-from color_math import to_int, interp_color, cuberp, hsv
+from color_math import to_int, interp_color, lerp, cuberp, hsv, rainbow_gen
 
 
 # Generates an image based on a function defining the color of each pixel
@@ -18,7 +18,13 @@ def generate(width: int, height: int, generator) -> Image:
 
 # Gay pride flag gradient
 def gen_gay_flag(width: int, height: int) -> Image:
-    # Uses hsv to generate a rainbow
+
+    return generate(width, height, lambda x, y: to_int(rainbow_gen(360 * (0.8 * (x + y / 2) / width + 0.03), lerp)))
+
+
+# Gay pride flag gradient, but using traditional hsv
+# Doesn't look quite as good imo
+def gen_gay_flag_hsv(width: int, height: int) -> Image:
     return generate(width, height, lambda x, y: hsv(x / 7 + y / 14, 0.8, 0.95))
 
 

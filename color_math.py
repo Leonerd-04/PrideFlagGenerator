@@ -49,3 +49,28 @@ def hsv(h: float, s: float, v: float) -> tuple:
     if mode < 6: return f, e, g
 
     return 0, 0, 0  # Will paint pixels with an erroneous mode as black
+
+
+# Generates a rainbow gradient through interpolation, as specified by the interp parameter
+def rainbow_gen(hue: float, interp) -> tuple:
+    hue %= 360  # Hue is always between 0 and 360
+    section = int(hue / 120)
+
+    # c represents a correction factor to brighten the darker colours
+    # c_limit represents a restriction on the power of the c correction factor.
+    c_limit = 144
+    if section == 0:
+        r = interp(hue / 120, 255, 0)
+        g = interp(hue / 120, 0, 255)
+        c = r * g / c_limit
+        return r + c, g + c, 0
+    if section == 1:
+        g = interp(hue / 120 - 1, 255, 0)
+        b = interp(hue / 120 - 1, 0, 255)
+        c = g * b / c_limit
+        return 0, g + c, b + c
+    else:
+        b = interp(hue / 120 - 2, 255, 0)
+        r = interp(hue / 120 - 2, 0, 255)
+        c = b * r / c_limit
+        return r + c, 0, b + c
