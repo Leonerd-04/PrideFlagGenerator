@@ -1,6 +1,6 @@
 from PIL import Image
 from numpy import abs, exp
-from color_math import to_int, interp_color, lerp, cuberp, hsv, rainbow_gen, quartic_bump
+from color_math import to_int, interp_color, lerp, cuberp, hsv, rainbow_gen, sine_bump
 
 
 # Generates an image based on a function defining the color of each pixel
@@ -24,7 +24,7 @@ def gen_gay_flag(width: int, height: int) -> Image:
 # Gay man (mlm) pride flag gradient
 def gen_mlm_flag(width: int, height: int) -> Image:
     return generate(width, height, lambda x, y: to_int(
-        hsv(90/width * (x + y/2 - height/4) + 150, min((x + y / 2 - width / 2) ** 2 / width / 12, 1), 0.8)))
+        hsv(80/width * (x + y/2 - height/4) + 145, sine_bump(2 / width * (x + y/2 - width/2 - height/4) + 0.5, 1, 0.24), 0.9)))
 
 
 # Gay pride flag gradient, but using traditional hsv
@@ -174,4 +174,4 @@ def gen_progress_flag(width: int, height: int) -> Image:
 
 # Runs a smaller scale test of just one of the flags
 if __name__ == "__main__":
-    gen_mlm_flag(1920, 200).show()
+    gen_mlm_flag(1920, 1080).show()

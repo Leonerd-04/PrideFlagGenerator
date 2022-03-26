@@ -1,3 +1,5 @@
+import numpy as np
+
 # Linear interpolation
 # Admittedly doesn't look very good
 # Does not necessarily restrict to values between 0 and 1
@@ -20,6 +22,12 @@ def quartic_bump(x: float, x0: float, x1: float) -> float:
     x = min(1.0, x)
     x = max(-1.0, x)
     return x0 + (x1 - x0) * (x**2 - 1) **2
+
+
+def sine_bump(x: float, x0: float, x1: float) -> float:
+    x = min(1.0, x)
+    x = max(0.0, x)
+    return x0 + (x1 - x0) * np.sin(np.pi * x)**2
 
 
 # Interpolation of two colors
