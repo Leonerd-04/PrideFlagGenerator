@@ -26,7 +26,7 @@ def gen_mlm_flag(width: int, height: int) -> Image:
     return generate(width, height, lambda x, y: to_int(
         hsv(80/width * (x + y/2 - height/4) + 145,
             sine_bump(2 / width * (x + y/2 - width/2 - height/4) + 0.5, 1, 0.24),
-            0.95
+            sine_bump(1 / width * (x + y/2 - width/2 - height/4) + 0.5, 0.9, 1)
             )))
 
 
