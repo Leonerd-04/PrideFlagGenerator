@@ -14,6 +14,14 @@ def cuberp(x: float, x0: float, x1: float) -> float:
     return x0 + (x1 - x0) * (3 * x ** 2 - 2 * x ** 3)
 
 
+# Gives a smooth, polynomial bump using f(x) = (x² - 1)²
+# Always restricts to x between -1 and 1
+def quartic_bump(x: float, x0: float, x1: float) -> float:
+    x = min(1.0, x)
+    x = max(-1.0, x)
+    return x0 + (x1 - x0) * (x**2 - 1) **2
+
+
 # Interpolation of two colors
 # interp parameter allows for the specification of the interpolation method as a lambda expression
 def interp_color(x: float, color1: tuple, color2: tuple, interp) -> tuple:
