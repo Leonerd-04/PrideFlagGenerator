@@ -24,7 +24,7 @@ def quartic_bump(x: float, x0: float, x1: float) -> float:
     return x0 + (x1 - x0) * (x**2 - 1) **2
 
 
-# Gives a smooth, polynomial bump using f(x) = sin²x
+# Gives a smooth, sinusoidal bump using f(x) = sin²x
 # Always restricts to x between 0 and 1
 def sine_bump(x: float, x0: float, x1: float) -> float:
     if x > 1.0 or x < 0.0:
