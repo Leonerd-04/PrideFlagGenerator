@@ -16,27 +16,27 @@ def generate(width: int, height: int, generator) -> Image:
     return image
 
 
-# Gay pride flag gradient
-def gen_gay_flag(width: int, height: int) -> Image:
+# Generic gay pride flag gradient
+def gen_pride_flag(width: int, height: int) -> Image:
     return generate(width, height, lambda x, y: to_int(rainbow_gen(360 * (0.8 * (x + y / 2) / width + 0.03), lerp)))
 
 
 # Gay man (mlm) pride flag gradient
-def gen_mlm_flag(width: int, height: int) -> Image:
+def gen_gay_flag(width: int, height: int) -> Image:
     return generate(width, height, lambda x, y: to_int(
-        hsv_lineless(92/width * (x + y/2 - height/4) + 150,
-            sine_bump(2 / width * (x + y/2 - width/2 - height/4) + 0.5, 0.83, 0.15),
-            sine_bump(1 / width * (x + y/2 - width/2 - height/4) + 0.5, 0.78, 0.93)
-            )))
+        hsv_lineless(92 / width * (x + y / 2 - height / 4) + 150,
+                     sine_bump(2 / width * (x + y / 2 - width / 2 - height / 4) + 0.5, 0.83, 0.15),
+                     sine_bump(1 / width * (x + y / 2 - width / 2 - height / 4) + 0.5, 0.78, 0.93)
+                     )))
 
 
 # Lesbian (wlw) pride flag gradient
 def gen_lesbian_flag(width: int, height: int) -> Image:
     return generate(width, height, lambda x, y: to_int(
-        hsv_lineless(64/width * (x + y/2 - height/4) + 324,
-            sine_bump(2 / width * (x + y/2 - width/2 - height/4) + 0.5, 0.83, 0.15),
-            sine_bump(1 / width * (x + y/2 - width/2 - height/4) + 0.5, 0.64, 0.93)
-            )))
+        hsv_lineless(64 / width * (x + y / 2 - height / 4) + 324,
+                     sine_bump(2 / width * (x + y / 2 - width / 2 - height / 4) + 0.5, 0.83, 0.15),
+                     sine_bump(1 / width * (x + y / 2 - width / 2 - height / 4) + 0.5, 0.64, 0.93)
+                     )))
 
 
 # Gay pride flag gradient, but using traditional hsv
@@ -71,7 +71,7 @@ def gen_bi_flag(width: int, height: int) -> Image:
         delta = x - center
         blur = 320
         if delta < -width / 2:
-            return to_int(interp_color((-width / 2 - delta) / blur, purple, magenta,  cuberp))
+            return to_int(interp_color((-width / 2 - delta) / blur, purple, magenta, cuberp))
         if delta > width / 2:
             return to_int(interp_color(0.6 * (delta - width / 2) / blur, purple, blue, cuberp))
         return purple
@@ -127,7 +127,7 @@ def gen_trans_flag(width: int, height: int) -> Image:
         delta = abs(x - center)
         if delta < width / 2 + 30:
             return to_int(interp_color((width / 2 - delta) / 80, pink, white, cuberp))
-        if delta < 3/2 * width + 30:
+        if delta < 3 / 2 * width + 30:
             return to_int(interp_color((3 * width / 2 - delta) / 120, blue, pink, cuberp))
         return blue
 
@@ -135,7 +135,7 @@ def gen_trans_flag(width: int, height: int) -> Image:
     return generate(width, height, lambda x, y: get_color(x + y / 2, center, 500))
 
 
-# Enby pride flag gradient
+# Non-binary pride flag gradient
 def gen_enby_flag(width: int, height: int) -> Image:
     # Colors to be used
     yellow = 255, 244, 48
@@ -177,7 +177,9 @@ def gen_progress_flag(width: int, height: int) -> Image:
         if delta < -1 * width:
             return to_int(interp_color((delta + 1.5 * width) / blur + 0.5, brown, black, cuberp))
         if delta < 0:
-            return to_int(interp_color((delta + 0.5 * width) / blur + 0.5, black, hsv(54 * delta / width + 24, 0.8, 0.95), cuberp))
+            return to_int(
+                interp_color((delta + 0.5 * width) / blur + 0.5, black, hsv(54 * delta / width + 24, 0.8, 0.95),
+                             cuberp))
         return hsv(54 * delta / width + 24, 0.8, 0.95)
 
     center = (width + height / 2) / 2
@@ -186,4 +188,4 @@ def gen_progress_flag(width: int, height: int) -> Image:
 
 # Runs a smaller scale test of just one of the flags
 if __name__ == "__main__":
-    gen_mlm_flag(1920, 1080).show()
+    gen_gay_flag(1920, 1080).show()

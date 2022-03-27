@@ -1,4 +1,3 @@
-from PIL import Image
 from generator import *
 
 
@@ -17,8 +16,8 @@ if __name__ == '__main__':
     flags = []
     width, height = 1920, 120
 
+    flags.append(gen_pride_flag(width, height))
     flags.append(gen_gay_flag(width, height))
-    flags.append(gen_mlm_flag(width, height))
     flags.append(gen_lesbian_flag(width, height))
     flags.append(gen_trans_flag(width, height))
     flags.append(gen_bi_flag(width, height))

@@ -16,7 +16,8 @@ def desaturate(sat: float, color: tuple) -> tuple:
 # Admittedly doesn't look very good
 # Does not necessarily restrict to values between 0 and 1
 def lerp(x: float, x0: float, x1: float, restrict=False) -> float:
-    if restrict: x = min(1.0, max(0.0, x))
+    if restrict:
+        x = min(1.0, max(0.0, x))
     return x0 + x * (x1 - x0)
 
 
@@ -33,7 +34,7 @@ def cuberp(x: float, x0: float, x1: float) -> float:
 def quartic_bump(x: float, x0: float, x1: float) -> float:
     x = min(1.0, x)
     x = max(-1.0, x)
-    return x0 + (x1 - x0) * (x**2 - 1) **2
+    return x0 + (x1 - x0) * (x**2 - 1) ** 2
 
 
 # Gives a smooth, sinusoidal bump using f(x) = sin²x
@@ -71,12 +72,18 @@ def hsv(h: float, s: float, v: float) -> tuple:
     g = int((x + m) * 255)
     mode = h / 60
 
-    if mode < 1: return f, g, e
-    if mode < 2: return g, f, e
-    if mode < 3: return e, f, g
-    if mode < 4: return e, g, f
-    if mode < 5: return g, e, f
-    if mode < 6: return f, e, g
+    if mode < 1:
+        return f, g, e
+    if mode < 2:
+        return g, f, e
+    if mode < 3:
+        return e, f, g
+    if mode < 4:
+        return e, g, f
+    if mode < 5:
+        return g, e, f
+    if mode < 6:
+        return f, e, g
 
     return 0, 0, 0  # Will paint pixels with an erroneous mode as black
 
@@ -106,6 +113,7 @@ def rainbow_gen(hue: float, interp) -> tuple:
         return r + c, 0, b + c
 
 
-# Uses the hsv to improve upon traditional hsv in some ways for image generation
+# Uses the rainbow generator to improve upon traditional hsv in some ways for image generation
+# This creates smoother hue transitions without annoying lines at 60°, 180°, and 300°
 def hsv_lineless(hue: float, sat: float, val: float) -> tuple:
     return scale(val, desaturate(sat, rainbow_gen(hue, lerp)))
