@@ -1,4 +1,16 @@
-import numpy as np
+from numpy import sin, pi
+
+
+# Changes a color's brightness
+def scale(scalar: float, color: tuple) -> tuple:
+    return scalar * color[0], scalar * color[1], scalar * color[2]
+
+
+# Desaturates a color
+def desaturate(sat: float, color: tuple) -> tuple:
+    a = 255 * (1 - sat)
+    return a + sat * color[0], a + sat * color[1], a + sat * color[2]
+
 
 # Linear interpolation
 # Admittedly doesn't look very good
@@ -29,7 +41,7 @@ def quartic_bump(x: float, x0: float, x1: float) -> float:
 def sine_bump(x: float, x0: float, x1: float) -> float:
     if x > 1.0 or x < 0.0:
         return x0
-    return x0 + (x1 - x0) * np.sin(np.pi * x)**2
+    return x0 + (x1 - x0) * sin(pi * x)**2
 
 
 # Interpolation of two colors
@@ -92,3 +104,8 @@ def rainbow_gen(hue: float, interp) -> tuple:
         r = interp(hue / 120 - 2, 0, 255)
         c = b * r / c_limit
         return r + c, 0, b + c
+
+
+# Uses the hsv to improve upon traditional hsv in some ways for image generation
+def hsv_lineless(hue: float, sat: float, val: float) -> tuple:
+    return scale(val, desaturate(sat, rainbow_gen(hue, lerp)))
