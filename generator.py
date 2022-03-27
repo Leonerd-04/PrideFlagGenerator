@@ -30,6 +30,14 @@ def gen_mlm_flag(width: int, height: int) -> Image:
             )))
 
 
+# Lesbian (wlw) pride flag gradient
+def gen_lesbian_flag(width: int, height: int) -> Image:
+    return generate(width, height, lambda x, y: to_int(
+        hsv_lineless(64/width * (x + y/2 - height/4) + 324,
+            sine_bump(2 / width * (x + y/2 - width/2 - height/4) + 0.5, 0.83, 0.15),
+            sine_bump(1 / width * (x + y/2 - width/2 - height/4) + 0.5, 0.64, 0.83)
+            )))
+
 # Gay pride flag gradient, but using traditional hsv
 # Doesn't look quite as good imo
 def gen_gay_flag_hsv(width: int, height: int) -> Image:

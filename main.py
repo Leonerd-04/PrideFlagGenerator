@@ -1,6 +1,5 @@
 from PIL import Image
-from generator import gen_gay_flag, gen_mlm_flag, gen_bi_flag, gen_trans_flag, gen_pan_flag, \
-    gen_ace_flag, gen_enby_flag, gen_progress_flag
+from generator import *
 
 
 # Combines all the flags in the list of flags
@@ -20,6 +19,7 @@ if __name__ == '__main__':
 
     flags.append(gen_gay_flag(width, height))
     flags.append(gen_mlm_flag(width, height))
+    flags.append(gen_lesbian_flag(width, height))
     flags.append(gen_trans_flag(width, height))
     flags.append(gen_bi_flag(width, height))
     flags.append(gen_pan_flag(width, height))
