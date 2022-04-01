@@ -188,4 +188,9 @@ def gen_progress_flag(width: int, height: int) -> Image:
 
 # Runs a smaller scale test of just one of the flags
 if __name__ == "__main__":
-    gen_gay_flag(1920, 1080).show()
+    gay = gen_gay_flag(1920, 1080)
+    gay.show()
+    gay.save("out/gay_pride.png", "PNG")
+    les = gen_lesbian_flag(1920, 1080)
+    les.show()
+    les.save("out/lesbian_pride.png", "PNG")
