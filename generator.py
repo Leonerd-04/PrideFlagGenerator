@@ -33,9 +33,9 @@ def gen_gay_flag(width: int, height: int) -> Image:
 # Lesbian (wlw) pride flag gradient
 def gen_lesbian_flag(width: int, height: int) -> Image:
     return generate(width, height, lambda x, y: to_int(
-        hsv_lineless(64 / width * (x + y / 2 - height / 4) + 324,
-                     sine_bump(2 / width * (x + y / 2 - width / 2 - height / 4) + 0.5, 0.83, 0.15),
-                     sine_bump(1 / width * (x + y / 2 - width / 2 - height / 4) + 0.5, 0.64, 0.93)
+        hsv_lineless(42 / width * (x + y / 2 - height / 4) + 340,
+                     sine_bump(2 / width * (x + y / 2 - width / 2 - height / 4) + 0.5, 0.73, 0.15),
+                     sine_bump(1 / width * (x + y / 2 - width / 2 - height / 4) + 0.5, 0.80, 0.90)
                      )))
 
 
@@ -78,6 +78,26 @@ def gen_bi_flag(width: int, height: int) -> Image:
 
     center = (width + height / 2) / 2
     return generate(width, height, lambda x, y: get_color(x + y / 2, center, 60))
+
+
+# Bi pride once again, with improved hsv generation rather than cubic
+# Increases compute times, but looks better imo
+def gen_bi_flag_hsv(width: int, height: int) -> Image:
+
+    def get_hue(x, y):
+        z = (x + y / 2 - height / 4) / width  # Maps the screen to values from 0 to 1, with a slant
+        if z < 1/3:
+            return lerp(3 * z, 340, 304)  # First third of the flag is interpolation between magenta and purple
+        if z < 13/15:
+            return lerp(1.25 * (1.5 * z - 0.5), 304, 240)  # Interpolation between purple and blue
+
+        return cuberp(0.1 * (15 * z - 13), 240, 225)
+
+    return generate(width, height, lambda x, y: to_int(
+        hsv_lineless(get_hue(x, y),
+                     sine_bump(1.4 / width * (x + y / 2 - width / 2 - height / 4) + 0.5, 0.72, 0.90),
+                     cuberp(1.8 / width * (x + y / 2 - width / 4 - height / 4) + 0.5, 0.90, 0.75)
+                     )))
 
 
 # Pan pride flag gradient
@@ -188,9 +208,6 @@ def gen_progress_flag(width: int, height: int) -> Image:
 
 # Runs a smaller scale test of just one of the flags
 if __name__ == "__main__":
-    gay = gen_gay_flag(1920, 1080)
-    gay.show()
-    gay.save("out/gay_pride.png", "PNG")
-    les = gen_lesbian_flag(1920, 1080)
-    les.show()
-    les.save("out/lesbian_pride.png", "PNG")
+    gen_gay_flag(1920, 1080).save("out/gay_pride.png", "PNG")
+    gen_lesbian_flag(1920, 1080).save("out/lesbian_pride.png", "PNG")
+    gen_bi_flag_hsv(1920, 1080).save("out/bi_pride.png", "PNG")
