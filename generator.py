@@ -16,9 +16,15 @@ def generate(width: int, height: int, generator) -> Image:
     return image
 
 
-# Generic gay pride flag gradient
+# LGBT pride flag gradient
 def gen_pride_flag(width: int, height: int) -> Image:
     return generate(width, height, lambda x, y: to_int(rainbow_gen(360 * (0.8 * (x + y / 2) / width + 0.03), lerp)))
+
+
+# Pride flag gradient, but using traditional hsv
+# Doesn't look quite as good imo
+def gen_pride_flag_hsv(width: int, height: int) -> Image:
+    return generate(width, height, lambda x, y: hsv(x / 7 + y / 14, 0.8, 0.95))
 
 
 # Gay man (mlm) pride flag gradient
@@ -37,12 +43,6 @@ def gen_lesbian_flag(width: int, height: int) -> Image:
                      sine_bump(2 / width * (x + y / 2 - width / 2 - height / 4) + 0.5, 0.73, 0.15),
                      sine_bump(1 / width * (x + y / 2 - width / 2 - height / 4) + 0.5, 0.80, 0.90)
                      )))
-
-
-# Gay pride flag gradient, but using traditional hsv
-# Doesn't look quite as good imo
-def gen_gay_flag_hsv(width: int, height: int) -> Image:
-    return generate(width, height, lambda x, y: hsv(x / 7 + y / 14, 0.8, 0.95))
 
 
 # Bi pride flag gradient, but using logistical curves
