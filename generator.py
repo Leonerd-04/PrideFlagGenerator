@@ -208,6 +208,15 @@ def gen_progress_flag(width: int, height: int) -> Image:
 
 # Runs a smaller scale test of just one of the flags
 if __name__ == "__main__":
-    gen_gay_flag(1920, 1080).save("out/gay_pride.png", "PNG")
-    gen_lesbian_flag(1920, 1080).save("out/lesbian_pride.png", "PNG")
-    gen_bi_flag_hsv(1920, 1080).save("out/bi_pride.png", "PNG")
+    width, height = 1920, 1080
+
+    print("Generating mlm flag...")
+    gen_gay_flag(width, height).save("out/gay_pride.png", "PNG")
+
+    print("Generating wlw flag...")
+    gen_lesbian_flag(width, height).save("out/lesbian_pride.png", "PNG")
+
+    print("Generating bisexual flag...")
+    gen_bi_flag_hsv(width, height).save("out/bi_pride.png", "PNG")
+
+    print("Generation complete.")
