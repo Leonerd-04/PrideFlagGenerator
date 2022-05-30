@@ -89,7 +89,7 @@ def hsv(h: float, s: float, v: float) -> tuple:
 
 
 # Generates a rainbow gradient through interpolation, as specified by the interp parameter
-def rainbow_gen(hue: float, interp) -> tuple:
+def rainbow_gen(hue: float, limit: float, interp) -> tuple:
     hue %= 360  # Hue is always between 0 and 360
     section = int(hue / 120)
 
@@ -115,5 +115,5 @@ def rainbow_gen(hue: float, interp) -> tuple:
 
 # Uses the rainbow generator to improve upon traditional hsv in some ways for image generation
 # This creates smoother hue transitions without annoying lines at 60°, 180°, and 300°
-def hsv_lineless(hue: float, sat: float, val: float, interp) -> tuple:
-    return scale(val, desaturate(sat, rainbow_gen(hue, interp)))
+def hsv_lineless(hue: float, sat: float, val: float, limit, interp) -> tuple:
+    return scale(val, desaturate(sat, rainbow_gen(hue, limit, interp)))

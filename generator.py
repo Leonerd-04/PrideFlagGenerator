@@ -24,6 +24,7 @@ def gen_pride_flag(width: int, height: int) -> Image:
                         360 * (0.6 * (x + y / 2 + height / 4) / width),
                         0.8,
                         0.9,
+                        144,
                         cuberp
             )))
 
@@ -48,6 +49,7 @@ def gen_gay_flag(width: int, height: int) -> Image:
                      + cuberp(4 / width * (x + y / 2 - width / 2 - height / 4), 0.00, 0.70),
                      cuberp(1 / width * (x + y / 2 - width / 2 - height / 4) + 1, 0.67, 0.90)
                         + cuberp(1 / width * (x + y / 2 - width / 2 - height / 4), 0.00, -0.42),
+                     144,
                      cuberp
                      )))
 
@@ -66,6 +68,7 @@ def gen_lesbian_flag(width: int, height: int) -> Image:
                      sine_bump(2 / width * (x + y / 2 - width / 2 - height / 4) + 0.5, 0.73, 0.15),
                      cuberp(1.6 / width * (x + y / 2 - width / 2 - height / 4) + 1, 0.68, 0.90) +
                         cuberp(1.6 / width * (x + y / 2 - width / 2 - height / 4), 0.00, -0.20),
+                     144,
                      cuberp
                      )))
 
@@ -119,6 +122,7 @@ def gen_bi_flag(width: int, height: int) -> Image:
         hsv_lineless(get_hue(x, y),
                      sine_bump(1.4 / width * (x + y / 2 - width / 2 - height / 4) + 0.5, 0.72, 0.90),
                      cuberp(1.8 / width * (x + y / 2 - width / 4 - height / 4) + 0.5, 0.84, 0.75),
+                     144,
                      cuberp
                      )))
 
