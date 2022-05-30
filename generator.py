@@ -23,7 +23,8 @@ def gen_pride_flag(width: int, height: int) -> Image:
                     hsv_lineless(
                         360 * (0.6 * (x + y / 2 + height / 4) / width),
                         0.8,
-                        0.9
+                        0.9,
+                        cuberp
             )))
 
 
@@ -42,19 +43,30 @@ def gen_gay_flag(width: int, height: int) -> Image:
     #                  )))
 
     return generate(width, height, lambda x, y: to_int(
-        hsv_lineless(96 / width * (x + y / 2 - height / 4) + 150,
-                     sine_bump(2 / width * (x + y / 2 - width / 2 - height / 4) + 0.5, 0.83, 0.15),
-                     cuberp(1 / width * (x + y / 2 - width / 2 - height / 4) + 1, 0.78, 0.93)
-                        + cuberp(1 / width * (x + y / 2 - width / 2 - height / 4), 0.00, -0.38)
+        hsv_lineless(108 / width * (x + y / 2 - height / 4) + 156,
+                     cuberp(4 / width * (x + y / 2 - width / 2 - height / 4) + 1, 0.64, 0.15)
+                     + cuberp(4 / width * (x + y / 2 - width / 2 - height / 4), 0.00, 0.70),
+                     cuberp(1 / width * (x + y / 2 - width / 2 - height / 4) + 1, 0.67, 0.90)
+                        + cuberp(1 / width * (x + y / 2 - width / 2 - height / 4), 0.00, -0.42),
+                     cuberp
                      )))
 
 
 # Lesbian (wlw) pride flag gradient
 def gen_lesbian_flag(width: int, height: int) -> Image:
+    # return generate(width, height, lambda x, y: to_int(
+    #     hsv_lineless(60 / width * (x + y / 2 - height / 4) + 324,
+    #                  sine_bump(2 / width * (x + y / 2 - width / 2 - height / 4) + 0.5, 0.73, 0.15),
+    #                  sine_bump(1 / width * (x + y / 2 - width / 2 - height / 4) + 0.5, 0.80, 0.90),
+    #                  cuberp
+    #                  )))
+
     return generate(width, height, lambda x, y: to_int(
-        hsv_lineless(42 / width * (x + y / 2 - height / 4) + 340,
+        hsv_lineless(60 / width * (x + y / 2 - height / 4) + 324,
                      sine_bump(2 / width * (x + y / 2 - width / 2 - height / 4) + 0.5, 0.73, 0.15),
-                     sine_bump(1 / width * (x + y / 2 - width / 2 - height / 4) + 0.5, 0.80, 0.90)
+                     cuberp(1.6 / width * (x + y / 2 - width / 2 - height / 4) + 1, 0.68, 0.90) +
+                        cuberp(1.6 / width * (x + y / 2 - width / 2 - height / 4), 0.00, -0.20),
+                     cuberp
                      )))
 
 
@@ -99,17 +111,15 @@ def gen_bi_flag_hsv(width: int, height: int) -> Image:
 
     def get_hue(x, y):
         z = (x + y / 2 - height / 4) / width  # Maps the screen to values from 0 to 1, with a slant
-        if z < 1/3:
-            return lerp(3 * z, 340, 304)  # First third of the flag is interpolation between magenta and purple
-        if z < 13/15:
-            return lerp(1.25 * (1.5 * z - 0.5), 304, 240)  # Interpolation between purple and blue
-
-        return cuberp(0.1 * (15 * z - 13), 240, 225)
+        if z < 2/5:
+            return lerp(2.5 * z, 350, 304)  # First third of the flag is interpolation between magenta and purple
+        return lerp(1.75 * (z - 0.4), 304, 240)  # Interpolation between purple and blue
 
     return generate(width, height, lambda x, y: to_int(
         hsv_lineless(get_hue(x, y),
                      sine_bump(1.4 / width * (x + y / 2 - width / 2 - height / 4) + 0.5, 0.72, 0.90),
-                     cuberp(1.8 / width * (x + y / 2 - width / 4 - height / 4) + 0.5, 0.90, 0.75)
+                     cuberp(1.8 / width * (x + y / 2 - width / 4 - height / 4) + 0.5, 0.84, 0.75),
+                     cuberp
                      )))
 
 
@@ -221,6 +231,5 @@ def gen_progress_flag(width: int, height: int) -> Image:
 
 # Runs a smaller scale test of just one of the flags
 if __name__ == "__main__":
-    width, height = 1920, 1080
-    gen_gay_flag(width, height).show()
-
+    width, height = 960, 540
+    gen_pride_flag(width, height).show()
