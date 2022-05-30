@@ -18,7 +18,13 @@ def generate(width: int, height: int, generator) -> Image:
 
 # LGBT pride flag gradient
 def gen_pride_flag(width: int, height: int) -> Image:
-    return generate(width, height, lambda x, y: to_int(rainbow_gen(360 * (0.8 * (x + y / 2) / width + 0.03), lerp)))
+    # return generate(width, height, lambda x, y: to_int(rainbow_gen(360 * (0.8 * (x + y / 2) / width + 0.03), lerp)))
+    return generate(width, height, lambda x, y: to_int(
+                    hsv_lineless(
+                        360 * (0.6 * (x + y / 2 + height / 4) / width),
+                        0.8,
+                        0.9
+            )))
 
 
 # Pride flag gradient, but using traditional hsv
@@ -29,10 +35,17 @@ def gen_pride_flag_hsv(width: int, height: int) -> Image:
 
 # Gay man (mlm) pride flag gradient
 def gen_gay_flag(width: int, height: int) -> Image:
+    # return generate(width, height, lambda x, y: to_int(
+    #     hsv_lineless(92 / width * (x + y / 2 - height / 4) + 150,
+    #                  sine_bump(2 / width * (x + y / 2 - width / 2 - height / 4) + 0.5, 0.83, 0.15),
+    #                  sine_bump(1 / width * (x + y / 2 - width / 2 - height / 4) + 0.5, 0.78, 0.93)
+    #                  )))
+
     return generate(width, height, lambda x, y: to_int(
-        hsv_lineless(92 / width * (x + y / 2 - height / 4) + 150,
+        hsv_lineless(96 / width * (x + y / 2 - height / 4) + 150,
                      sine_bump(2 / width * (x + y / 2 - width / 2 - height / 4) + 0.5, 0.83, 0.15),
-                     sine_bump(1 / width * (x + y / 2 - width / 2 - height / 4) + 0.5, 0.78, 0.93)
+                     cuberp(1 / width * (x + y / 2 - width / 2 - height / 4) + 1, 0.78, 0.93)
+                        + cuberp(1 / width * (x + y / 2 - width / 2 - height / 4), 0.00, -0.38)
                      )))
 
 
@@ -209,14 +222,5 @@ def gen_progress_flag(width: int, height: int) -> Image:
 # Runs a smaller scale test of just one of the flags
 if __name__ == "__main__":
     width, height = 1920, 1080
+    gen_gay_flag(width, height).show()
 
-    print("Generating mlm flag...")
-    gen_gay_flag(width, height).save("out/gay_pride.png", "PNG")
-
-    print("Generating wlw flag...")
-    gen_lesbian_flag(width, height).save("out/lesbian_pride.png", "PNG")
-
-    print("Generating bisexual flag...")
-    gen_bi_flag_hsv(width, height).save("out/bi_pride.png", "PNG")
-
-    print("Generation complete.")

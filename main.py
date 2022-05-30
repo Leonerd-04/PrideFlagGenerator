@@ -13,19 +13,14 @@ def combine_flags(width: int, height: int, flags: list) -> Image:
 
 # The main script just generates an image with the flags stacked on top of one another
 if __name__ == '__main__':
-    flags = []
-    width, height = 1920, 120
+    print("Generating mlm flag...")
+    gen_gay_flag(width, height).save("out/gay_pride.png", "PNG")
 
-    flags.append(gen_pride_flag(width, height))
-    flags.append(gen_gay_flag(width, height))
-    flags.append(gen_lesbian_flag(width, height))
-    flags.append(gen_trans_flag(width, height))
-    flags.append(gen_bi_flag(width, height))
-    flags.append(gen_pan_flag(width, height))
-    flags.append(gen_ace_flag(width, height))
-    flags.append(gen_enby_flag(width, height))
-    flags.append(gen_progress_flag(width, height))
-
-    flags_image = combine_flags(width, height, flags)
-
-    flags_image.show('Flags')
+#
+    # print("Generating wlw flag...")
+    # gen_lesbian_flag(width, height).save("out/lesbian_pride.png", "PNG")
+#
+    # print("Generating bisexual flag...")
+    # gen_bi_flag_hsv(width, height).save("out/bi_pride.png", "PNG")
+#
+    # print("Generation complete.")
