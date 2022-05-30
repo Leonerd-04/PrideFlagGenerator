@@ -86,7 +86,7 @@ def bi_logistical(width: int, height: int) -> Image:
 
 # Also bi pride, but this time with cubic interpolation rather than logistical
 # Should reduce compute times
-def gen_bi_flag(width: int, height: int) -> Image:
+def gen_bi_flag_interp(width: int, height: int) -> Image:
     # Colors used for the flag
     magenta = 214, 2, 112
     purple = 155, 79, 150
@@ -107,7 +107,7 @@ def gen_bi_flag(width: int, height: int) -> Image:
 
 # Bi pride once again, with improved hsv generation rather than cubic
 # Increases compute times, but looks better imo
-def gen_bi_flag_hsv(width: int, height: int) -> Image:
+def gen_bi_flag(width: int, height: int) -> Image:
 
     def get_hue(x, y):
         z = (x + y / 2 - height / 4) / width  # Maps the screen to values from 0 to 1, with a slant
