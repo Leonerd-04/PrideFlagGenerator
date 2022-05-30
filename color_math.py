@@ -17,23 +17,28 @@ def desaturate(sat: float, color: tuple) -> tuple:
 # Does not necessarily restrict to values between 0 and 1
 def lerp(x: float, x0: float, x1: float, restrict=False) -> float:
     if restrict:
-        x = min(1.0, max(0.0, x))
+        if x <= 0.0:
+            return x0
+        if x >= 1.0:
+            return x1
     return x0 + x * (x1 - x0)
 
 
 # Cubic interpolation using f(x) = 3x² - 2x³
 # Always restricts to x between 0 and 1
 def cuberp(x: float, x0: float, x1: float) -> float:
-    x = min(1.0, x)
-    x = max(0.0, x)
+    if x <= 0.0:
+        return x0
+    if x >= 1.0:
+        return x1
     return x0 + (x1 - x0) * (3 * x ** 2 - 2 * x ** 3)
 
 
 # Gives a smooth, polynomial bump using f(x) = (x² - 1)²
 # Always restricts to x between -1 and 1
 def quartic_bump(x: float, x0: float, x1: float) -> float:
-    x = min(1.0, x)
-    x = max(-1.0, x)
+    if x > 1.0 or x < 0.0:
+        return x0
     return x0 + (x1 - x0) * (x**2 - 1) ** 2
 
 
