@@ -95,21 +95,21 @@ def rainbow_gen(hue: float, limit: float, interp) -> tuple:
 
     # c represents a correction factor to brighten the darker colours
     # c_limit represents a restriction on the power of the c correction factor.
-    c_limit = 144
+
     if section == 0:
         r = interp(hue / 120, 255, 0)
         g = interp(hue / 120, 0, 255)
-        c = r * g / c_limit
+        c = r * g / limit
         return r + c, g + c, 0
     if section == 1:
         g = interp(hue / 120 - 1, 255, 0)
         b = interp(hue / 120 - 1, 0, 255)
-        c = g * b / c_limit
+        c = g * b / limit
         return 0, g + c, b + c
     else:
         b = interp(hue / 120 - 2, 255, 0)
         r = interp(hue / 120 - 2, 0, 255)
-        c = b * r / c_limit
+        c = b * r / limit
         return r + c, 0, b + c
 
 
