@@ -113,7 +113,7 @@ def rainbow_gen(hue: float, limit: float, interp) -> tuple:
         return 0, g + c, b + c
     else:
         b = interp(hue / 120 - 2, 255, 0)
-        r = interp(hue / 120 - 2, 0, 255)
+        r = cuberp(hue / 120 - 2, 0, 255)
         c = b * r / limit
         return r + c, 0, b + c
 
