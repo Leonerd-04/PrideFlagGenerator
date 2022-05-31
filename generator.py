@@ -16,16 +16,40 @@ def generate(width: int, height: int, generator) -> Image:
     return image
 
 
+def gen_striped_flag(width: int, height: int, fit: int, colors: list) -> Image:
+    def getColor(z: int) -> tuple:
+        z %= 1
+        x = z * len(colors)
+        i = int(x)
+        color0 = colors[i]
+        color1 = colors[(i + 1) % len(colors)]
+        x %= 1
+        return to_int(interp_color(x, color0, color1, cuberp))
+    return generate(width, height, lambda x, y: getColor(fit * (x + y / 2 - height / 4 - width / 2) / width + 0.5))
+
+
+def gen_pride_flag_striped(width: int, height: int) -> Image:
+    colors = [
+        hsv_lineless(345, 0.8, 0.88, 256, lerp),  # red
+        hsv_lineless(40, 0.8, 0.9, 256, lerp),  # orange
+        hsv_lineless(60, 0.8, 1, 256, lerp),  # yellow
+        hsv_lineless(130, 0.8, 0.7, 256, lerp),  # green
+        hsv_lineless(240, 0.8, 0.9, 256, lerp),  # blue
+        hsv_lineless(270, 0.8, 0.9, 256, lerp)   # purple
+    ]
+    return gen_striped_flag(width, height, 1, colors)
+
+
 # LGBT pride flag gradient
 def gen_pride_flag(width: int, height: int) -> Image:
-    # return generate(width, height, lambda x, y: to_int(rainbow_gen(360 * (0.8 * (x + y / 2) / width + 0.03), lerp)))
+    # return generate(width, height, lambda x, y: to_int(hue_sin(0.95 * (x + y / 2 - height / 4) / width - 0.06)))
     return generate(width, height, lambda x, y: to_int(
                     hsv_lineless(
-                        360 * (0.6 * (x + y / 2 + height / 4) / width),
+                        360 * (0.95 * (x + y / 2 - height / 4) / width - 0.06),
                         0.8,
-                        0.9,
-                        144,
-                        cuberp
+                        0.94,
+                        256,
+                        lerp
             )))
 
 
