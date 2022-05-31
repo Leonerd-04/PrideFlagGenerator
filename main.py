@@ -6,9 +6,13 @@ import os
 if __name__ == '__main__':
     width, height = 1920, 1080
 
+    print("Creating out directory...")
+
     try:
         os.mkdir("out")  # os.mkdir("out") tries to make the directory "out" wherever this script was run
+        print("Directory created.")
     except FileExistsError:
+        print("Directory already exists. Continuing...\n")
         pass
 
     print("Generating LGBTQ+ pride flag...")
@@ -23,4 +27,4 @@ if __name__ == '__main__':
     print("Generating bi pride flag...")
     gen_bi_flag(width, height).save("out/bi_pride.png", "PNG")
 
-    print("Generation complete. The images can be found in the folder <project directory>/out/")
+    print("Generation complete. The images can be found in <project directory>/out/")
