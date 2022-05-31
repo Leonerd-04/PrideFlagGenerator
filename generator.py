@@ -72,9 +72,9 @@ def gen_gay_flag(width: int, height: int) -> Image:
                      cuberp(4 / width * (x + y / 2 - width / 2 - height / 4) + 1, 0.64, 0.15)
                      + cuberp(4 / width * (x + y / 2 - width / 2 - height / 4), 0.00, 0.70),
                      cuberp(1 / width * (x + y / 2 - width / 2 - height / 4) + 1, 0.67, 0.90)
-                        + cuberp(1 / width * (x + y / 2 - width / 2 - height / 4), 0.00, -0.42),
-                     144,
-                     cuberp
+                        + cuberp(1 / width * (x + y / 2 - width / 2 - height / 4), 0.00, -0.32),
+                     256,
+                     lerp
                      )))
 
 
@@ -88,12 +88,12 @@ def gen_lesbian_flag(width: int, height: int) -> Image:
     #                  )))
 
     return generate(width, height, lambda x, y: to_int(
-        hsv_lineless(60 / width * (x + y / 2 - height / 4) + 324,
+        hsv_lineless(57 / width * (x + y / 2 - height / 4) + 324,
                      sine_bump(2 / width * (x + y / 2 - width / 2 - height / 4) + 0.5, 0.73, 0.15),
-                     cuberp(1.6 / width * (x + y / 2 - width / 2 - height / 4) + 1, 0.68, 0.90) +
-                        cuberp(1.6 / width * (x + y / 2 - width / 2 - height / 4), 0.00, -0.20),
-                     144,
-                     cuberp
+                     cuberp(1.6 / width * (x + y / 2 - width / 2 - height / 4) + 1, 0.73, 0.90) +
+                        cuberp(1.6 / width * (x + y / 2 - width / 2 - height / 4), 0.00, -0.23),
+                     256,
+                     lerp
                      )))
 
 
@@ -139,15 +139,15 @@ def gen_bi_flag(width: int, height: int) -> Image:
     def get_hue(x, y):
         z = (x + y / 2 - height / 4) / width  # Maps the screen to values from 0 to 1, with a slant
         if z < 2/5:
-            return lerp(2.5 * z, 350, 304)  # First third of the flag is interpolation between magenta and purple
-        return lerp(1.75 * (z - 0.4), 304, 240)  # Interpolation between purple and blue
+            return lerp(2.5 * z, 342, 304)  # First third of the flag is interpolation between magenta and purple
+        return lerp(1.67 * (z - 0.4), 304, 240)  # Interpolation between purple and blue
 
     return generate(width, height, lambda x, y: to_int(
         hsv_lineless(get_hue(x, y),
                      sine_bump(1.4 / width * (x + y / 2 - width / 2 - height / 4) + 0.5, 0.72, 0.90),
-                     cuberp(1.8 / width * (x + y / 2 - width / 4 - height / 4) + 0.5, 0.84, 0.75),
-                     144,
-                     cuberp
+                     cuberp(1.8 / width * (x + y / 2 - width / 2 - height / 4) + 0.5, 0.67, 0.80),
+                     256,
+                     lerp
                      )))
 
 
@@ -260,4 +260,4 @@ def gen_progress_flag(width: int, height: int) -> Image:
 # Runs a smaller scale test of just one of the flags
 if __name__ == "__main__":
     width, height = 960, 540
-    gen_pride_flag(width, height).show()
+    gen_bi_flag(width, height).show()
