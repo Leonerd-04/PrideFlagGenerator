@@ -1,6 +1,6 @@
 from PIL import Image
-from numpy import abs, exp
-from color_math import to_int, interp_color, lerp, cuberp, hsv, rainbow_gen, sine_bump, hsv_lineless
+
+from color_math import to_int, interp_color, lerp, cuberp, hsv, sine_bump, hsv_lineless
 
 
 # Generates an image based on a function defining the color of each pixel
@@ -16,63 +16,46 @@ def generate(width: int, height: int, generator) -> Image:
     return image
 
 
+# Generates a flag with stripes, like a lot of (okay pretty much all) pride flags consist of. Will be used for flags
+# with colors that don't have a simple mathematical way of generating, like the trans pride flag.
+# could also be used to generate flags of countries like germany and france ig
+# the fit parameter scales the image; smaller = zoomed in, larger = zoomed out
 def gen_striped_flag(width: int, height: int, fit: int, colors: list) -> Image:
-    def getColor(z: int) -> tuple:
+    def get_color(z: int) -> tuple:
         z %= 1
         x = z * len(colors)
         i = int(x)
+
         color0 = colors[i]
-        color1 = colors[(i + 1) % len(colors)]
+        color1 = colors[(i + 1) % len(colors)]  # The modulo serves to let the flag loop around itself because why not
         x %= 1
+
         return to_int(interp_color(x, color0, color1, cuberp))
-    return generate(width, height, lambda x, y: getColor(fit * (x + y / 2 - height / 4 - width / 2) / width + 0.5))
+
+    return generate(width, height, lambda x, y: get_color(fit * (x + y / 2 - height / 4 - width / 2) / width + 0.5))
 
 
-def gen_pride_flag_striped(width: int, height: int) -> Image:
-    colors = [
-        hsv_lineless(345, 0.8, 0.88, 256, lerp),  # red
-        hsv_lineless(40, 0.8, 0.9, 256, lerp),  # orange
-        hsv_lineless(60, 0.8, 1, 256, lerp),  # yellow
-        hsv_lineless(130, 0.8, 0.7, 256, lerp),  # green
-        hsv_lineless(240, 0.8, 0.9, 256, lerp),  # blue
-        hsv_lineless(270, 0.8, 0.9, 256, lerp)   # purple
-    ]
-    return gen_striped_flag(width, height, 1, colors)
-
-
-# LGBT pride flag gradient
+# LGBT pride flag gradient (rainbow).
+# Ngl getting the colors to not look terrible and not make annoying lines at specific hues was hell.
 def gen_pride_flag(width: int, height: int) -> Image:
-    # return generate(width, height, lambda x, y: to_int(hue_sin(0.95 * (x + y / 2 - height / 4) / width - 0.06)))
     return generate(width, height, lambda x, y: to_int(
-                    hsv_lineless(
-                        360 * (0.95 * (x + y / 2 - height / 4) / width - 0.06),
-                        0.8,
-                        0.94,
-                        256,
-                        lerp
-            )))
+        hsv_lineless(
+            360 * (0.95 * (x + y / 2 - height / 4) / width - 0.06),
+            0.8,
+            0.94,
+            256,
+            lerp
+        )))
 
 
-# Pride flag gradient, but using traditional hsv
-# Doesn't look quite as good imo
-def gen_pride_flag_hsv(width: int, height: int) -> Image:
-    return generate(width, height, lambda x, y: hsv(x / 7 + y / 14, 0.8, 0.95))
-
-
-# Gay man (mlm) pride flag gradient
+# Gay (mlm) pride flag gradient
 def gen_gay_flag(width: int, height: int) -> Image:
-    # return generate(width, height, lambda x, y: to_int(
-    #     hsv_lineless(92 / width * (x + y / 2 - height / 4) + 150,
-    #                  sine_bump(2 / width * (x + y / 2 - width / 2 - height / 4) + 0.5, 0.83, 0.15),
-    #                  sine_bump(1 / width * (x + y / 2 - width / 2 - height / 4) + 0.5, 0.78, 0.93)
-    #                  )))
-
     return generate(width, height, lambda x, y: to_int(
         hsv_lineless(108 / width * (x + y / 2 - height / 4) + 156,
                      cuberp(4 / width * (x + y / 2 - width / 2 - height / 4) + 1, 0.64, 0.15)
                      + cuberp(4 / width * (x + y / 2 - width / 2 - height / 4), 0.00, 0.70),
                      cuberp(1 / width * (x + y / 2 - width / 2 - height / 4) + 1, 0.67, 0.90)
-                        + cuberp(1 / width * (x + y / 2 - width / 2 - height / 4), 0.00, -0.32),
+                     + cuberp(1 / width * (x + y / 2 - width / 2 - height / 4), 0.00, -0.32),
                      256,
                      lerp
                      )))
@@ -80,65 +63,22 @@ def gen_gay_flag(width: int, height: int) -> Image:
 
 # Lesbian (wlw) pride flag gradient
 def gen_lesbian_flag(width: int, height: int) -> Image:
-    # return generate(width, height, lambda x, y: to_int(
-    #     hsv_lineless(60 / width * (x + y / 2 - height / 4) + 324,
-    #                  sine_bump(2 / width * (x + y / 2 - width / 2 - height / 4) + 0.5, 0.73, 0.15),
-    #                  sine_bump(1 / width * (x + y / 2 - width / 2 - height / 4) + 0.5, 0.80, 0.90),
-    #                  cuberp
-    #                  )))
-
     return generate(width, height, lambda x, y: to_int(
         hsv_lineless(57 / width * (x + y / 2 - height / 4) + 324,
                      sine_bump(2 / width * (x + y / 2 - width / 2 - height / 4) + 0.5, 0.73, 0.15),
                      cuberp(1.6 / width * (x + y / 2 - width / 2 - height / 4) + 1, 0.73, 0.90) +
-                        cuberp(1.6 / width * (x + y / 2 - width / 2 - height / 4), 0.00, -0.23),
+                     cuberp(1.6 / width * (x + y / 2 - width / 2 - height / 4), 0.00, -0.23),
                      256,
                      lerp
                      )))
 
 
-# Bi pride flag gradient, but using logistical curves
-# No longer used as it's pretty slow and the cubic interpolated one looks better imo
-def bi_logistical(width: int, height: int) -> Image:
-    center = (width + height) / 2
-
-    # Uses logistical curves to create a smooth transition from magenta to purple to blue
-    # Takes a while to calculate, unfortunately
-    curve_magenta = lambda x: -40 / (1 + exp(-0.02 * (x - center + 200)))
-    curve_blue = lambda x: -40 / (1 + exp(-0.04 * (x - center - 140)))
-    curve_total = lambda x: curve_magenta(x) + curve_blue(x)
-
-    return generate(width, height, lambda x, y: hsv(320 + curve_total(x + y / 2), 0.85, 0.88 - x / 7680))
-
-
-# Also bi pride, but this time with cubic interpolation rather than logistical
-# Should reduce compute times
-def gen_bi_flag_interp(width: int, height: int) -> Image:
-    # Colors used for the flag
-    magenta = 214, 2, 112
-    purple = 155, 79, 150
-    blue = 0, 56, 168
-
-    def get_color(x: int, center: float, width: int) -> tuple:
-        delta = x - center
-        blur = 320
-        if delta < -width / 2:
-            return to_int(interp_color((-width / 2 - delta) / blur, purple, magenta, cuberp))
-        if delta > width / 2:
-            return to_int(interp_color(0.6 * (delta - width / 2) / blur, purple, blue, cuberp))
-        return purple
-
-    center = (width + height / 2) / 2
-    return generate(width, height, lambda x, y: get_color(x + y / 2, center, 60))
-
-
 # Bi pride once again, with improved hsv generation rather than cubic
 # Increases compute times, but looks better imo
 def gen_bi_flag(width: int, height: int) -> Image:
-
     def get_hue(x, y):
         z = (x + y / 2 - height / 4) / width  # Maps the screen to values from 0 to 1, with a slant
-        if z < 2/5:
+        if z < 2 / 5:
             return lerp(2.5 * z, 342, 304)  # First third of the flag is interpolation between magenta and purple
         return lerp(1.67 * (z - 0.4), 304, 240)  # Interpolation between purple and blue
 

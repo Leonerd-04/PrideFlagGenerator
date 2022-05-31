@@ -13,7 +13,6 @@ def desaturate(sat: float, color: tuple) -> tuple:
 
 
 # Linear interpolation
-# Admittedly doesn't look very good
 # Does not necessarily restrict to values between 0 and 1
 def lerp(x: float, x0: float, x1: float, restrict=False) -> float:
     if restrict:
@@ -25,6 +24,7 @@ def lerp(x: float, x0: float, x1: float, restrict=False) -> float:
 
 
 # Cubic interpolation using f(x) = 3x² - 2x³
+# Has a gradual lead in/lead out for smoother transitions
 # Always restricts to x between 0 and 1
 def cuberp(x: float, x0: float, x1: float) -> float:
     if x <= 0.0:
@@ -32,14 +32,6 @@ def cuberp(x: float, x0: float, x1: float) -> float:
     if x >= 1.0:
         return x1
     return x0 + (x1 - x0) * (3 * x ** 2 - 2 * x ** 3)
-
-
-# Gives a smooth, polynomial bump using f(x) = (x² - 1)²
-# Always restricts to x between -1 and 1
-def quartic_bump(x: float, x0: float, x1: float) -> float:
-    if x > 1.0 or x < 0.0:
-        return x0
-    return x0 + (x1 - x0) * (x**2 - 1) ** 2
 
 
 # Gives a smooth, sinusoidal bump using f(x) = sin²x
@@ -62,6 +54,8 @@ def to_int(color: tuple) -> tuple:
 
 
 # Returns a tuple r, g, b calculated from the hsv values given
+# i got the formulas from wikipedia i think
+# has ugly lines at 60, 180, & 300 degrees so prolly won't be used anymore
 def hsv(h: float, s: float, v: float) -> tuple:
     if s == 0:
         v *= 255
@@ -94,13 +88,12 @@ def hsv(h: float, s: float, v: float) -> tuple:
 
 
 # Generates a rainbow gradient through interpolation, as specified by the interp parameter
+# limit signifies a restriction on the correction factor used to brighten the darker colors
 def rainbow_gen(hue: float, limit: float, interp) -> tuple:
     hue %= 360  # Hue is always between 0 and 360
     section = int(hue / 120)
 
     # c represents a correction factor to brighten the darker colours
-    # c_limit represents a restriction on the power of the c correction factor.
-
     if section == 0:
         r = interp(hue / 120, 255, 0)
         g = interp(hue / 120, 0, 255)
@@ -119,6 +112,6 @@ def rainbow_gen(hue: float, limit: float, interp) -> tuple:
 
 
 # Uses the rainbow generator to improve upon traditional hsv in some ways for image generation
-# This creates smoother hue transitions without annoying lines at 60°, 180°, and 300°
+# This creates smoother hue transitions without those annoying lines at 60°, 180°, and 300°
 def hsv_lineless(hue: float, sat: float, val: float, limit, interp) -> tuple:
     return scale(val, desaturate(sat, rainbow_gen(hue, limit, interp)))
