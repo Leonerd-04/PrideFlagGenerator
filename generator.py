@@ -1,11 +1,12 @@
-from PIL import Image
+from concurrent.futures import ThreadPoolExecutor
 
-from color_math import to_int, interp_color, lerp, cuberp, hsv, sine_bump, hsv_lineless
+from color_math import *
+from PIL import Image
 
 
 # Generates an image based on a function defining the color of each pixel
 # generator: function used to generate the color of a pixel; takes coordinates as parameters and returns a color (tuple)
-def generate(width: int, height: int, generator) -> Image:
+def generate(width: int, height: int, generator: Callable[[float, float], tuple[int, int, int]]) -> Image:
     image = Image.new("RGB", (width, height))
     px = image.load()
 
@@ -20,7 +21,7 @@ def generate(width: int, height: int, generator) -> Image:
 # with colors that don't have a simple mathematical way of generating, like the trans pride flag.
 # could also be used to generate flags of countries like germany and france ig
 # the fit parameter scales the image; smaller = zoomed in, larger = zoomed out
-def gen_striped_flag(width: int, height: int, fit: int, colors: list) -> Image:
+def gen_striped_flag(width: int, height: int, fit: int, colors: list[tuple[int, int, int]]) -> Image:
     def get_color(z: int) -> tuple:
         z %= 1
         x = z * len(colors)

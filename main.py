@@ -1,5 +1,3 @@
-from typing import Callable
-
 from generator import *
 import os
 import time
