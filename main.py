@@ -25,6 +25,7 @@ if __name__ == '__main__':
         lambda: gen_lesbian_flag(width, height),
         lambda: gen_bi_flag(width, height),
         lambda: gen_pan_flag(width, height),
+        lambda: gen_poly_flag(width, height),
         lambda: gen_ace_flag(width, height),
         lambda: gen_trans_flag(width, height),
         lambda: gen_nb_flag(width, height)
@@ -36,6 +37,7 @@ if __name__ == '__main__':
         "lesbian (wlw)",
         "bi",
         "pan",
+        "poly",
         "ace",
         "trans",
         "non binary"
@@ -47,6 +49,7 @@ if __name__ == '__main__':
         "lesbian_pride",
         "bi_pride",
         "pan_pride",
+        "poly_pride",
         "ace_pride",
         "trans_pride",
         "non_binary_pride"
