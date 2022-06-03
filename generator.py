@@ -103,8 +103,7 @@ def gen_lesbian_flag(width: int, height: int) -> Image:
                      )))
 
 
-# Bi pride once again, with improved hsv generation rather than cubic
-# Increases compute times, but looks better imo
+# Bisexual pride flag gradient
 def gen_bi_flag(width: int, height: int) -> Image:
     def get_hue(x, y):
         z = (x + y / 2 - height / 4) / width  # Maps the screen to values from 0 to 1, with a slant
@@ -121,7 +120,7 @@ def gen_bi_flag(width: int, height: int) -> Image:
                      )))
 
 
-# Pan pride flag gradient
+# Pansexual pride flag gradient
 def gen_pan_flag(width: int, height: int) -> Image:
     magenta = 255, 33, 142
     yellow = 252, 216, 0
@@ -130,6 +129,36 @@ def gen_pan_flag(width: int, height: int) -> Image:
     colors = [magenta, yellow, blue]
 
     return gen_striped_flag(width, height, colors)
+
+
+# Polysexual pride flag gradient
+def gen_poly_flag(width: int, height: int) -> Image:
+    magenta = 230, 18, 170
+    green = 7, 213, 105
+    blue = 28, 146, 246
+
+    colors = [magenta, green, blue]
+
+    def get_color(z: float) -> tuple:
+        length = len(colors)
+
+        x = z * (length - 1) % length
+        i = int(x)
+
+        color0 = colors[i % length]
+        color1 = colors[(i + 1) % length]
+
+        color = interp_color(x % 1, color0, color1, cuberp)
+
+        # Smoothens the gap between the magenta and green of this flag
+        # Otherwise there's an ugly dark grey line
+        if x < 1:
+            factor = sine_bump(x % 1, 0, 0.14)
+            color = desaturate(1 - factor, scale(1 + factor, color))
+
+        return to_int(color)
+
+    return generate(width, height, lambda x, y: get_color((x + y / 2 - height / 4 - width / 2) / width + 0.5))
 
 
 # Ace pride flag gradient
@@ -177,4 +206,4 @@ def gen_nb_flag(width: int, height: int) -> Image:
 # Runs a smaller scale test of just one of the flags
 if __name__ == "__main__":
     width, height = 640, 360
-    gen_bi_flag(width, height).show()
+    gen_poly_flag(width, height).show()
