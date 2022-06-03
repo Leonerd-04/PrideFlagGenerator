@@ -20,21 +20,36 @@ if __name__ == '__main__':
 
     flags = [
         lambda: gen_pride_flag(width, height),
+        lambda: gen_progress_flag(width, height),
         lambda: gen_gay_flag(width, height),
         lambda: gen_lesbian_flag(width, height),
         lambda: gen_bi_flag(width, height),
+        lambda: gen_pan_flag(width, height),
+        lambda: gen_ace_flag(width, height),
+        lambda: gen_trans_flag(width, height),
+        lambda: gen_nb_flag(width, height)
     ]
     names = [
         "LGBTQ+",
+        "LGBTQ+ progress",
         "gay (mlm)",
         "lesbian (wlw)",
-        "bi"
+        "bi",
+        "pan",
+        "ace",
+        "trans",
+        "non binary"
     ]
     filenames = [
         "lgbtq_pride",
+        "lgbtq_progress",
         "gay_pride",
         "lesbian_pride",
-        "bi_pride"
+        "bi_pride",
+        "pan_pride",
+        "ace_pride",
+        "trans_pride",
+        "non_binary_pride"
     ]
 
     print("Creating out directory...")
