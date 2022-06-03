@@ -1,5 +1,4 @@
 from typing import Callable
-from numpy import sin, pi
 
 
 # Changes a color's brightness
@@ -35,12 +34,12 @@ def cuberp(x: float, x0: float, x1: float) -> float:
     return x0 + (x1 - x0) * (3 * x ** 2 - 2 * x ** 3)
 
 
-# Gives a smooth, sinusoidal bump using f(x) = sin²x
+# Gives a smooth, cubic bump using two cubic interpolations
 # Always restricts to x between 0 and 1
-def sine_bump(x: float, x0: float, x1: float) -> float:
-    if x > 1.0 or x < 0.0:
-        return x0
-    return x0 + (x1 - x0) * sin(pi * x)**2
+def cubic_bump(x: float, x0: float, x1: float) -> float:
+    if x < 0.5:
+        return cuberp(2 * x, x0, x1)
+    return cuberp(2 * x - 1, x1, x0)
 
 
 # Interpolation of two colors

@@ -95,7 +95,7 @@ def gen_gay_flag(width: int, height: int) -> Image:
 def gen_lesbian_flag(width: int, height: int) -> Image:
     return generate(width, height, lambda x, y: to_int(
         hsv_lineless(57 / width * (x + y / 2 - height / 4) + 324,
-                     sine_bump(2 / width * (x + y / 2 - width / 2 - height / 4) + 0.5, 0.73, 0.15),
+                     cubic_bump(2 / width * (x + y / 2 - width / 2 - height / 4) + 0.5, 0.73, 0.15),
                      cuberp(1.6 / width * (x + y / 2 - width / 2 - height / 4) + 1, 0.73, 0.90) +
                      cuberp(1.6 / width * (x + y / 2 - width / 2 - height / 4), 0.00, -0.23),
                      256,
@@ -113,7 +113,7 @@ def gen_bi_flag(width: int, height: int) -> Image:
 
     return generate(width, height, lambda x, y: to_int(
         hsv_lineless(get_hue(x, y),
-                     sine_bump(1.4 / width * (x + y / 2 - width / 2 - height / 4) + 0.5, 0.72, 0.90),
+                     cubic_bump(1.4 / width * (x + y / 2 - width / 2 - height / 4) + 0.5, 0.72, 0.90),
                      cuberp(1.8 / width * (x + y / 2 - width / 2 - height / 4) + 0.5, 0.72, 0.80),
                      256,
                      lerp
@@ -153,7 +153,7 @@ def gen_poly_flag(width: int, height: int) -> Image:
         # Smoothens the gap between the magenta and green of this flag
         # Otherwise there's an ugly dark grey line
         if x < 1:
-            factor = sine_bump(x % 1, 0, 0.14)
+            factor = cubic_bump(x % 1, 0, 0.14)
             color = desaturate(1 - factor, scale(1 + factor, color))
 
         return to_int(color)
