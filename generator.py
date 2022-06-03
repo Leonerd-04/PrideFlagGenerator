@@ -61,8 +61,10 @@ def gen_progress_flag(width: int, height: int) -> Image:
     colors = [white, pink, blue, brown, black]
 
     def get_color(z: int) -> tuple[float, float, float]:
-        x = z * 9 % 10
+        x = z * 9
 
+        if x < 0:
+            return colors[0]
         if x < 4:
             i = int(x)
             return interp_color(x % 1, colors[i], colors[i + 1], cuberp)
@@ -72,11 +74,9 @@ def gen_progress_flag(width: int, height: int) -> Image:
 
         if x < 5:
             return interp_color(x % 1, black, rainbow, cuberp)
-        if x < 9:
-            return rainbow
-        return interp_color(x % 1, rainbow, white, cuberp)
+        return rainbow
 
-    return generate(width, height, lambda x, y: to_int(get_color((x + y / 2 - width / 2 - height / 4) / width + 0.5)))
+    return generate(width, height, lambda x, y: to_int(get_color(0.86 * (x + y / 2 - width / 2 - height / 4) / width + 0.5)))
 
 
 # Gay (mlm) pride flag gradient
@@ -223,4 +223,4 @@ def gen_genderfluid_flag(width: int, height: int) -> Image:
 # Runs a smaller scale test of just one of the flags
 if __name__ == "__main__":
     width, height = 640, 360
-    gen_genderfluid_flag(width, height).show()
+    gen_progress_flag(width, height).show()
