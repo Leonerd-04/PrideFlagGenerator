@@ -1,4 +1,5 @@
 from generator import *
+from typing import Callable
 import os
 import time
 
@@ -60,7 +61,6 @@ if __name__ == '__main__':
             print(f"Took {time_elapsed:.2f} s.\n")
         else:
             print(f"Took {time_elapsed:.2f} ms.\n")
-        time.sleep(1)
 
     total_time /= 1000.0
 

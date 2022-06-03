@@ -1,5 +1,3 @@
-from concurrent.futures import ThreadPoolExecutor
-
 from color_math import *
 from PIL import Image
 
@@ -20,14 +18,15 @@ def generate(width: int, height: int, generator: Callable[[float, float], tuple[
 # with colors that don't have a simple mathematical way of generating, like the trans pride flag.
 # could also be used to generate flags of countries like germany and france ig
 # the fit parameter scales the image; smaller = zoomed in, larger = zoomed out
-def gen_striped_flag(width: int, height: int, fit: int, colors: list[tuple[int, int, int]]) -> Image:
-    def get_color(z: int) -> tuple:
-        z %= 1
-        x = z * len(colors)
+def gen_striped_flag(width: int, height: int, colors: list[tuple[int, int, int]], fit=1.0) -> Image:
+    def get_color(z: float) -> tuple:
+        length = len(colors)
+
+        x = z * (length - 1) % length
         i = int(x)
 
-        color0 = colors[i]
-        color1 = colors[(i + 1) % len(colors)]  # The modulo serves to let the flag loop around itself because why not
+        color0 = colors[i % length]
+        color1 = colors[(i + 1) % length]  # The modulo serves to let the flag loop around itself because why not
         x %= 1
 
         return to_int(interp_color(x, color0, color1, cuberp))
@@ -93,21 +92,13 @@ def gen_bi_flag(width: int, height: int) -> Image:
 
 # Pan pride flag gradient
 def gen_pan_flag(width: int, height: int) -> Image:
-    # Colors used for the flag
     magenta = 255, 33, 142
     yellow = 252, 216, 0
     blue = 1, 148, 252
 
-    def get_color(x: int, center: float, width: int) -> tuple:
-        delta = x - center
-        if delta < -width / 2:
-            return to_int(interp_color((-width / 2 - delta) / 400, yellow, magenta, cuberp))
-        if delta > width / 2:
-            return to_int(interp_color((delta - width / 2) / 400, yellow, blue, cuberp))
-        return yellow
+    colors = [magenta, yellow, blue]
 
-    center = (width + height / 2) / 2
-    return generate(width, height, lambda x, y: get_color(x + y / 2, center, 640))
+    return gen_striped_flag(width, height, colors)
 
 
 # Ace pride flag gradient
@@ -199,5 +190,5 @@ def gen_progress_flag(width: int, height: int) -> Image:
 
 # Runs a smaller scale test of just one of the flags
 if __name__ == "__main__":
-    width, height = 960, 540
-    gen_bi_flag(width, height).show()
+    width, height = 640, 360
+    gen_pan_flag(width, height).show()
