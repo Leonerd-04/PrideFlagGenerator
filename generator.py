@@ -48,6 +48,7 @@ def gen_pride_flag(width: int, height: int) -> Image:
         )))
 
 
+# The progress flag; the rainbow flag + the trans flag colors + black and brown
 def gen_progress_flag(width: int, height: int) -> Image:
     # Colors used
     # Rainbow is generated using the lineless hsv from the pride flag
@@ -188,8 +189,8 @@ def gen_trans_flag(width: int, height: int) -> Image:
     return gen_striped_flag(width, height, colors, fit=0.83)
 
 
-# Non-binary pride flag gradient
-def gen_nb_flag(width: int, height: int) -> Image:
+# Nonbinary pride flag gradient
+def gen_nonbinary_flag(width: int, height: int) -> Image:
     yellow = 255, 244, 48
     white = 255, 255, 255
     purple = 156, 89, 209
@@ -200,7 +201,26 @@ def gen_nb_flag(width: int, height: int) -> Image:
     return gen_striped_flag(width, height, colors, fit=0.9)
 
 
+# Genderfluid pride flag gradient
+def gen_genderfluid_flag(width: int, height: int) -> Image:
+
+    def get_sat(z: float) -> float:
+        return lerp(z, 0.56, 0.95) + cubic_bump(3 * (z - 0.1), 0.0, -0.6)
+
+    def get_brightness(z: float) -> float:
+        return lerp(z, 0.93, 0.85) + cubic_bump(3 * (z - 0.1), 0.0, 0.07) + cubic_bump(3 * (z - 0.6), 0.0, -0.7)
+
+    def get_color(z: float) -> tuple[int, int, int]:
+        return to_int(hsv_lineless(
+            lerp(z, 345, 225),
+            get_sat(z),
+            get_brightness(z)
+        ))
+
+    return generate(width, height, lambda x, y: get_color((x + y / 2 - width / 2 - height / 4) / width + 0.5))
+
+
 # Runs a smaller scale test of just one of the flags
 if __name__ == "__main__":
     width, height = 640, 360
-    gen_lesbian_flag(width, height).show()
+    gen_genderfluid_flag(width, height).show()

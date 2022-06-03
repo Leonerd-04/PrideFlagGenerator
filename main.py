@@ -28,7 +28,8 @@ if __name__ == '__main__':
         lambda: gen_poly_flag(width, height),
         lambda: gen_ace_flag(width, height),
         lambda: gen_trans_flag(width, height),
-        lambda: gen_nb_flag(width, height)
+        lambda: gen_nonbinary_flag(width, height),
+        lambda: gen_genderfluid_flag(width, height)
     ]
     names = [
         "LGBTQ+",
@@ -40,7 +41,8 @@ if __name__ == '__main__':
         "poly",
         "ace",
         "trans",
-        "non binary"
+        "nonbinary",
+        "genderfluid"
     ]
     filenames = [
         "lgbtq_pride",
@@ -52,7 +54,8 @@ if __name__ == '__main__':
         "poly_pride",
         "ace_pride",
         "trans_pride",
-        "non_binary_pride"
+        "nonbinary_pride",
+        "genderfluid-pride"
     ]
 
     print("Creating out directory...")
