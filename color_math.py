@@ -36,10 +36,15 @@ def cuberp(x: float, x0: float, x1: float) -> float:
 
 # Gives a smooth, cubic bump using two cubic interpolations
 # Always restricts to x between 0 and 1
-def cubic_bump(x: float, x0: float, x1: float) -> float:
+def cubic_bump_uneven(x: float, x0: float, x1: float, x2: float) -> float:
     if x < 0.5:
         return cuberp(2 * x, x0, x1)
-    return cuberp(2 * x - 1, x1, x0)
+    return cuberp(2 * x - 1, x1, x2)
+
+
+# Same as above but with the two ends of the bump being at the same level.
+def cubic_bump(x: float, x0: float, x1: float) -> float:
+    return cubic_bump_uneven(x, x0, x1, x0)
 
 
 # Interpolation of two colors

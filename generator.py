@@ -82,10 +82,8 @@ def gen_progress_flag(width: int, height: int) -> Image:
 def gen_gay_flag(width: int, height: int) -> Image:
     return generate(width, height, lambda x, y: to_int(
         hsv_lineless(108 / width * (x + y / 2 - height / 4) + 156,
-                     cuberp(4 / width * (x + y / 2 - width / 2 - height / 4) + 1, 0.64, 0.15)
-                     + cuberp(4 / width * (x + y / 2 - width / 2 - height / 4), 0.00, 0.70),
-                     cuberp(1 / width * (x + y / 2 - width / 2 - height / 4) + 1, 0.67, 0.90)
-                     + cuberp(1 / width * (x + y / 2 - width / 2 - height / 4), 0.00, -0.32),
+                     cubic_bump_uneven(2 / width * (x + y / 2 - width / 2 - height / 4) + 0.5, 0.64, 0.15, 0.85),
+                     cubic_bump_uneven(0.5 / width * (x + y / 2 - width / 2 - height / 4) + 0.5, 0.67, 0.90, 0.68),
                      256,
                      lerp
                      )))
@@ -96,8 +94,7 @@ def gen_lesbian_flag(width: int, height: int) -> Image:
     return generate(width, height, lambda x, y: to_int(
         hsv_lineless(57 / width * (x + y / 2 - height / 4) + 324,
                      cubic_bump(2 / width * (x + y / 2 - width / 2 - height / 4) + 0.5, 0.73, 0.15),
-                     cuberp(1.6 / width * (x + y / 2 - width / 2 - height / 4) + 1, 0.73, 0.90) +
-                     cuberp(1.6 / width * (x + y / 2 - width / 2 - height / 4), 0.00, -0.23),
+                     cubic_bump_uneven(0.8 / width * (x + y / 2 - width / 2 - height / 4) + 0.5, 0.73, 0.90, 0.67),
                      256,
                      lerp
                      )))
@@ -206,4 +203,4 @@ def gen_nb_flag(width: int, height: int) -> Image:
 # Runs a smaller scale test of just one of the flags
 if __name__ == "__main__":
     width, height = 640, 360
-    gen_poly_flag(width, height).show()
+    gen_lesbian_flag(width, height).show()
