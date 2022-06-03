@@ -8,11 +8,10 @@ from PIL import Image
 # generator: function used to generate the color of a pixel; takes coordinates as parameters and returns a color (tuple)
 def generate(width: int, height: int, generator: Callable[[float, float], tuple[int, int, int]]) -> Image:
     image = Image.new("RGB", (width, height))
-    px = image.load()
 
     for x in range(width):
         for y in range(height):
-            px[x, y] = generator(x, y)
+            image.putpixel((x, y), generator(x, y))
 
     return image
 

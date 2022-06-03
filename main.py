@@ -15,7 +15,7 @@ def benchmark(function: Callable) -> float:
 
 # The main script just generates all the flags and saves them to a folder
 if __name__ == '__main__':
-    width, height = 192, 108
+    width, height = 1920, 1080
 
     flags = [
         lambda: gen_pride_flag(width, height),
