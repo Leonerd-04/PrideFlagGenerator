@@ -115,7 +115,7 @@ def gen_bi_flag(width: int, height: int) -> Image:
     return generate(width, height, lambda x, y: to_int(
         hsv_lineless(get_hue(x, y),
                      sine_bump(1.4 / width * (x + y / 2 - width / 2 - height / 4) + 0.5, 0.72, 0.90),
-                     cuberp(1.8 / width * (x + y / 2 - width / 2 - height / 4) + 0.5, 0.67, 0.80),
+                     cuberp(1.8 / width * (x + y / 2 - width / 2 - height / 4) + 0.5, 0.72, 0.80),
                      256,
                      lerp
                      )))
@@ -177,4 +177,4 @@ def gen_nb_flag(width: int, height: int) -> Image:
 # Runs a smaller scale test of just one of the flags
 if __name__ == "__main__":
     width, height = 640, 360
-    gen_progress_flag(width, height).show()
+    gen_bi_flag(width, height).show()
