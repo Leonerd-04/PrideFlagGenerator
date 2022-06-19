@@ -31,7 +31,7 @@ def cuberp(x: float, x0: float, x1: float) -> float:
         return x0
     if x >= 1.0:
         return x1
-    return x0 + (x1 - x0) * (3 * x ** 2 - 2 * x ** 3)
+    return x0 + (x1 - x0) * (3 - 2 * x) * x ** 2
 
 
 # Gives a smooth, cubic bump using two cubic interpolations
