@@ -15,7 +15,7 @@ def benchmark(function: Callable) -> float:
 
 
 # The main script just generates all the flags and saves them to a folder
-if __name__ == '__main__':
+def main():
     width, height = 1920, 1080
 
     flags = [
@@ -87,3 +87,7 @@ if __name__ == '__main__':
 
     print(f"Generation took {total_time:.2f} s.")
     print("The generated images can be found in <project directory>/out/")
+
+
+if __name__ == '__main__':
+    main()
